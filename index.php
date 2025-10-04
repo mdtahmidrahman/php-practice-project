@@ -77,16 +77,16 @@
 
         <?php
         // Database connection
-        $conn = new mysqli("localhost", "root", "", "test");
+        $conn = new mysqli("localhost", "root", "", "mdtr");
 
         if ($conn->connect_error) {
             die("<div class='message error'>Connection failed: " . $conn->connect_error . "</div>");
         }
 
-        // Check if form is submitted
-        if (isset($_GET['name']) && isset($_GET['email'])) {
-            $name = $_GET['name'];
-            $email = $_GET['email'];
+        // Check if form is submitted using POST
+        if (isset($_POST['name']) && isset($_POST['email'])) {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
 
             if (!empty($name) && !empty($email)) {
                 $sql = "INSERT INTO User (name, email) VALUES ('$name', '$email')";
@@ -112,7 +112,7 @@
         $conn->close();
         ?>
 
-        <form action="index.php" method="GET">
+        <form action="index.php" method="POST">
             <label>Name:</label>
             <input type="text" name="name" placeholder="Enter name">
 
