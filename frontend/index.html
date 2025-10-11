@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>User Form</h1>
+    <form id="userForm">
+        <label>Name:</label>
+        <input type="text" name="name" placeholder="Enter name" required>
+
+        <label>Email:</label>
+        <input type="text" name="email" placeholder="Enter email" required>
+
+        <input type="submit" value="Submit">
+    </form>
+    <div id="message"></div>
+</div>
+
+<script>
+    document.getElementById("userForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("http://localhost:8080/mdtr/backend/insert.php", {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                const msg = document.getElementById("message");
+                if (data.status === "success") {
+                    msg.innerHTML = `<div class="message success">
+                        <strong>Data Inserted!</strong><br>
+                        ID: ${data.id}<br>
+                        Name: ${data.name}<br>
+                        Email: ${data.email}
+                    </div>`;
+                } else {
+                    msg.innerHTML = `<div class="message error">${data.message}</div>`;
+                }
+            })
+            .catch(() => {
+                document.getElementById("message").innerHTML = `<div class="message error">Server error. Try again later.</div>`;
+            });
+    });
+</script>
+</body>
+</html>
